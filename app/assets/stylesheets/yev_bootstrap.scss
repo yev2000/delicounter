@@ -1,0 +1,45 @@
+/*a:link {
+    color: #99FFFF;
+}*/
+
+/* visited link */
+/* a:visited {
+    color: #99FFFF;
+}*/
+
+/* mouse over link */
+/* a:hover {
+    color: #99FFFF;
+} */
+
+/* selected link */
+/*a:active {
+    color: #99FFFF;
+}*/
+
+.table th, .table td {
+  border-top-color-value: rgba(56, 123, 69, 0.63);
+}
+
+.quiet {
+  color: #888888;
+}
+
+div.well {
+  /* background-color: #E3CEF6; */
+  background-color: #D8F6CE;
+  color: #003333;
+
+  padding: 15px;
+  border: 2px solid #9999FF;
+  box-shadow: 4px 4px 8px #3366FF;
+}
+
+body {
+  font-family: "Titillium Web", "Calibri", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: white;
+  /* background-color: #003366; */
+  background-color: #006666;
+}
+

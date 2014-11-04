@@ -1,0 +1,78 @@
+.well
+  %header
+    %h2 Hangout Queue
+
+.well
+  %header
+    %h3
+      Active Question
+    %strong(style="margin-left: 80px;")
+      User: Flo Doe
+    %br
+    %strong(style="margin-left: 80px;")
+      One-Liner:
+    %span(style="margin-right: 80px; margin-left: 40px;")
+      %em How to debug
+    .well(style="margin-top: 40px; margin-left: 80px; margin-right: 120px;")
+      I was wondering what is the recommended approach to debugging feature tests.
+
+.well
+  %table.well.table.table-condensed
+    %tr
+      %th(width="5%") Position
+      %th(width="20%") User
+      %th(width="40%") One-Liner
+      %th(width="20%") Time Waiting
+      %th(width="15%") Action
+    %tr
+      %td
+        1
+      %td
+        Alice Doe
+      %td
+        Difference between Put and Post
+      %td
+        %small
+          %em Submitted 10 minutes ago
+      %td
+        = icon_action_link("pencil", "Edit")
+        %br
+        = icon_action_link("trash", "Cancel")
+    %tr
+      %td
+        2
+      %td
+        Bob Doe
+      %td
+        Problem installing Capybara
+      %td
+        %small
+          %em Submitted 8 minutes ago
+      %td
+        = icon_action_link("list", "View Details")
+    %tr
+      %td
+        3
+      %td
+        James Doe
+      %td
+        User management question
+      %td
+        %small
+          %em Submitted 3 minutes ago
+      %td
+        = icon_action_link("list", "View Details")
+    %tr
+      %td
+        4
+      %td
+        Alice Doe
+      %td
+        Rspec feature development
+      %td
+        %small
+          %em Submitted 1 minute ago
+      %td
+        = icon_action_link("pencil", "Edit")
+        %br
+        = icon_action_link("trash", "Cancel")

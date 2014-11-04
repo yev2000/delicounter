@@ -1,0 +1,14 @@
+.well
+  %h2
+    Edit Question
+
+  %form
+  .control-group
+    .row(style="margin-left: 20px;")
+      %label(style="margin-right: 40px;") One-Liner
+      %input(size="50" value="Here is the one-liner that I am editing")
+    .row(style="margin-left: 20px;")
+      %label(style="margin-right: 40px;") Details
+      %br
+      %textarea.form(style="margin-left: 90px;" name="" cols="50" rows="6")  Very general question I was hoping someone could clarify for me. I'm looking at the basic generated scaffold code for a model called products. I noticed the new and show actions in the controller don't have much written in them. In fact, show is entirely empty and new only has the line "@product = Product.new". I know these 2 actions are supposed to go to a separate view. A view to show the resource, and a new form view to input info and create a resource, respectively.
+    %input(type="submit" value="Submit" class="btn btn-success" style="margin-top: 40px;")

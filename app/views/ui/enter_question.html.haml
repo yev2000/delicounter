@@ -1,0 +1,15 @@
+.well
+  %h2
+    Enter New Question
+
+  %form
+    .control-group
+      .row(style="margin-left: 20px;")
+        %label(style="margin-right: 40px;") One-Liner
+        %input(size="50")
+      .row(style="margin-left: 20px;")
+        %label(style="margin-right: 40px;") Details
+        %br
+        %textarea.form(style="margin-left: 90px;" name="" cols="50" rows="6")
+      %input(type="submit" value="Submit" class="btn btn-success" style="margin-top: 40px;")
+
