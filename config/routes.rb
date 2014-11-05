@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   
-  resources :questions, only: [:index]
+  resources :questions, only: [:index, :update, :create, :new]
+  resources :users, only: [:index, :create]
+
+  get 'signin' => 'users#new'
+
+  get 'home', controller: 'home'
 
   get 'ui(/:action)', controller: 'ui'
   

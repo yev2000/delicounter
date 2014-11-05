@@ -1,0 +1,6 @@
+.well
+  %header
+    %h1 Sign in
+  = bootstrap_form_for(@user) do |f|
+    = f.text_field :username, {label: "Your Name", cols: 50}
+    = f.submit "Submit", class: "btn btn-success"
