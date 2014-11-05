@@ -50,6 +50,11 @@ group :development, :test do
   gem 'rspec-rails', '2.99'
 end
 
+group :production do
+  gem "pg"
+  gem 'rails_12factor'
+end
+
 group :test do
   gem 'database_cleaner', '1.2.0'
   gem 'shoulda-matchers'
