@@ -1,0 +1,32 @@
+.well
+  %header
+    %h2 Hangout Queue
+
+.well
+  %header
+    %h3
+      Active Question
+    - if @active_question
+      %strong(style="margin-left: 80px;")
+        = "User: #{@active_question.user.username}"
+      %br
+      %strong(style="margin-left: 80px;")
+        One-Liner:
+      %span(style="margin-right: 80px; margin-left: 40px;")
+        %em= @active_question.title
+      .well(style="margin-top: 40px; margin-left: 80px; margin-right: 120px;")
+        = @active_question.body
+    - else
+      %strong(style="margin-left: 80px;")
+        No question has been claimed yet.
+
+.well
+  %table.well.table.table-condensed
+    %tr
+      %th(width="5%") Position
+      %th(width="20%") User
+      %th(width="40%") One-Liner
+      %th(width="20%") Time Waiting
+      %th(width="15%") Action
+    - @unclaimed_questions.each_with_index do |question, index|
+      = render "question", { question: question, index: index }

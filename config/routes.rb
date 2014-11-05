@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  resources :questions, only: [:index]
+
   get 'ui(/:action)', controller: 'ui'
   
   # The priority is based upon order of creation: first created -> highest priority.

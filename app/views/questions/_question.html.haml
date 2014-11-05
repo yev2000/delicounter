@@ -1,0 +1,17 @@
+%tr
+  %td
+    = index
+  %td
+    = question.user.username
+  %td
+    = question.title
+  %td
+    %small
+      %em= question.age_string
+  %td
+    -# ### will have to implement logic of whether the current user is the logged in user
+    = icon_action_link("pencil", "Edit")
+    %br
+    = icon_action_link("trash", "Cancel")
+    %br
+    = icon_action_link("list", "View Details")
