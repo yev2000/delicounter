@@ -16,6 +16,13 @@
         %em= @active_question.title
       .well(style="margin-top: 40px; margin-left: 80px; margin-right: 120px;")
         = @active_question.body
+      - if admin_logged_in?
+        = icon_action_link_large("eject", "Unclaim", unclaim_question_path(@active_question))
+        %br
+        %br
+        = icon_delete_action_link_large("check", "Complete", question_path(@active_question))
+        %br
+
     - else
       %strong(style="margin-left: 80px;")
         No question has been claimed yet.

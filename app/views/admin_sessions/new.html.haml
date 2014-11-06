@@ -1,0 +1,8 @@
+.well
+  = bootstrap_form_tag url: admin_sessions_path do |f|
+    %header
+      %h1
+        Admin Sign In
+    = f.text_field :username, label: "Username", value: @admin_username, autofocus: true
+    = f.password_field :password
+    = f.submit "Admin Sign In"

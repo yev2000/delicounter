@@ -6,12 +6,24 @@ def set_current_user(user=nil)
   session[:userid] = user.id
 end
 
+def set_current_admin_user(admin=nil)
+  if admin.nil?
+    admin = Fabricate(:admin)
+  end
+
+  session[:adminid] = admin.id
+end
+
 def get_current_user
   session[:userid] ? User.find_by(id: session[:userid]) : nil
 end
 
 def clear_current_user
   session[:userid] = nil
+end
+
+def clear_current_admin_user
+  session[:adminid] = nil
 end
 
 def sign_in_user(user)

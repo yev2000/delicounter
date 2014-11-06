@@ -1,6 +1,8 @@
 class QuestionsController < ApplicationController
 
-  before_action :require_user, except: [:index, :show]
+  before_action :require_user, except: [:index, :show, :claim, :unclaim, :destroy]
+  before_action :require_user_or_admin, only: [:destroy]
+  before_action :require_admin_user, only: [:claim, :unclaim]
 
   def index
     @unclaimed_questions = Question.all.where("claimed = 'f'").order(created_at: :asc)
@@ -44,13 +46,51 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    @question = verify_question_id(params[:id])
+    @question = verify_question_id(params[:id], (admin_logged_in? ? false : true))
     return unless @question    
     
+    username = @question.user.username
     @question.destroy
-    flash[:success] = "Your question (#{@question.title}) was deleted"
+
+    if (admin_logged_in?)
+      flash[:success] = "User #{username}'s question (#{@question.title}) was deleted"
+    else
+      flash[:success] = "Your question (#{@question.title}) was deleted"
+    end
+
     redirect_to questions_path
   
+  end
+
+  def unclaim
+    question = verify_question_id(params[:id], false)
+    return unless question
+
+    if (question != Question.active_question)
+      flash[:danger] = "You can only unclaim an already claimed question"
+      redirect_to questions_path
+    else
+      question.claimed = false
+      question.save
+      flash[:success] = "You have unclaimed the question (#{question.title})."
+      redirect_to questions_path
+    end
+  end
+
+  def claim
+    question = verify_question_id(params[:id], false)
+    return unless question
+
+    if (Question.active_question && (question != Question.active_question))
+      flash[:danger] = "There is already claimed question."
+      redirect_to questions_path
+    else
+      question.claimed = true
+      question.save
+      flash[:success] = "You have claimed the question (#{question.title})."
+      redirect_to questions_path
+    end
+
   end
 
   private
@@ -68,11 +108,11 @@ class QuestionsController < ApplicationController
       redirect_to questions_path
       return nil
     when (question.user != current_user_get) && for_edit_or_destroy
-      flash[:danger] = "You cannot edit another user's question"
+      flash[:danger] = "You cannot edit or delete another user's question"
       redirect_to questions_path
       return nil
     when (question == Question.active_question) && for_edit_or_destroy
-      flash[:danger] = "You cannot edit a question that has already been claimed by a TA"
+      flash[:danger] = "You cannot edit or delete a question that has already been claimed by a TA"
       redirect_to questions_path
       return nil
     else

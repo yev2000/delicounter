@@ -11,16 +11,21 @@
 
   %li
     .btn-group.nav_item
-      - if logged_in?
+      - if logged_in? || admin_logged_in?
         = link_to "#", class: "btn btn-primary btn-small dropdown-toggle", "data-toggle" => "dropdown", style: "padding-bottom: 6px;" do
-          = ("&nbsp;" + current_user_get.username + "&nbsp;&nbsp;").html_safe
+          - if logged_in?
+            = ("&nbsp;" + current_user_get.username + "&nbsp;&nbsp;").html_safe
+          - else
+            = ("&nbsp;" + current_admin_user_get.username + "&nbsp;&nbsp;").html_safe
           %span(class="caret")
 
         %ul.dropdown-menu
           %li
-            = link_to "Sign Out", signout_path
+            - if logged_in?
+              = link_to "Sign Out", signout_path
+            - else
+              = link_to "Sign Out", admin_signout_path
       - else
         = link_to "Sign In", signin_path, class: "btn btn-primary btn-small", style: "padding-bottom: 6px;"
 
 %hr
-

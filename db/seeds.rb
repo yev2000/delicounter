@@ -17,3 +17,5 @@ Fabricate(:question, user: u1, claimed: true)
 6.times { Fabricate(:question, user: u3) }
 4.times { Fabricate(:question, user: u4) }
 
+admin = Fabricate(:admin, username: "admin", password: "admin")
+

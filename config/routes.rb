@@ -2,18 +2,27 @@ Rails.application.routes.draw do
 
   root to: 'home#front'
   
-  resources :questions
+  resources :questions do
+    member do
+      get "claim"
+      get "unclaim"
+    end
+  end
+
   resources :users, only: [:index, :create]
+  resources :admin_sessions, only: [:create]
 
   get 'signin', to: 'users#new'
   get 'signout', to: 'users#destroy'
-  get 'admin_signin', to: 'admin#new'
-  get 'admin_signout', to: 'admin#destroy'
+  get 'admin_signin', to: 'admin_sessions#new'
+  get 'admin_signout', to: 'admin_sessions#destroy'
 
   get 'home', controller: 'home'
 
   get 'ui(/:action)', controller: 'ui'
   
+  get '*path', to: 'home#front'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

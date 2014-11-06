@@ -72,7 +72,7 @@ describe UsersController do
           get :destroy
         end
 
-        it("redirects to signin page") { expect(response).to redirect_to signin_path }
+        it("redirects to signin page") { expect(response).to redirect_to root_path }
         it("flashes a success message") { expect_success_flash }
         it("logs out the current user") { expect(session[:userid]).to be_nil }
       end

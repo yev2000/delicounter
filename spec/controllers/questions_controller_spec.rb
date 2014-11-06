@@ -284,7 +284,7 @@ describe QuestionsController do
   end # GET show
 
   describe "DELETE destroy" do
-    context "user not signed in" do
+    context "neither admin nor regular user not signed in" do
       before do
         user = Fabricate(:user)
         @question = Fabricate(:question, user: user)
@@ -296,24 +296,23 @@ describe QuestionsController do
         delete :destroy, id: @question.id
         expect(Question.all.size).to eq(1)
       end
-
     end
 
     context "user signed in" do
       before { set_current_user }
 
       context "id does not identify a question" do
-        before { @question = Fabricate(:question) }
+        before { @question = Fabricate(:question, user: get_current_user) }
 
         it_behaves_like("invalid_question_show_or_edit") { let(:action) { delete :destroy, id: 3 } }
 
         it "does not destroy the question" do
-          delete :destroy, id: @question.id
+          delete :destroy, id: 4
           expect(Question.all.size).to eq(1)
         end
       end
 
-      context "user owns the question being edited" do
+      context "user owns the question being destroyed" do
         before do
           @question = Fabricate(:question, user: get_current_user)
           delete :destroy, id: @question.id
@@ -352,7 +351,187 @@ describe QuestionsController do
       end
     end # user signed in
 
+    context "admin signed in" do
+      before { set_current_admin_user }
+
+      context "id does not identify a question" do
+        before { @question = Fabricate(:question, user: Fabricate(:user)) }
+
+        it_behaves_like("invalid_question_show_or_edit") { let(:action) { delete :destroy, id: 3 } }
+
+        it "does not destroy the question" do
+          delete :destroy, id: 4
+          expect(Question.all.size).to eq(1)
+        end
+      end
+
+      context "id identifies a question" do
+        before do
+          @question = Fabricate(:question, user: Fabricate(:user))
+          delete :destroy, id: @question.id
+        end
+
+        it("destroys the question") { expect(Question.all.size).to eq(0) }
+        it("renders the questions index") { expect(response).to redirect_to questions_path }
+        it("flashes success") { expect_success_flash }
+
+      end
+
+      context "question is already claimed" do
+        before do
+          @question = Fabricate(:question, claimed: true, user: Fabricate(:user))
+          delete :destroy, id: @question.id
+        end
+
+        it("destroys the question") { expect(Question.all.size).to eq(0) }
+        it("renders the questions index") { expect(response).to redirect_to questions_path }
+        it("flashes success") { expect_success_flash }
+
+      end
+
+    end # admin signed in
+
   end # DELETE destroy
+
+  describe "GET claim" do
+    context "admin not signed in" do
+      it_behaves_like("require_admin_sign_in") { let(:action) { get :claim, id: 1 } }
+    end
+    
+    context "non-admin user signed in" do
+      before do
+        set_current_user
+        question = Fabricate(:question, user: get_current_user)
+        get :claim, id: question.id
+      end
+
+      it("flashes a danger message") { expect_danger_flash }
+      it("redirects to root path") { expect(response).to redirect_to root_path }
+    end
+
+    context "admin user signed in" do
+      before { set_current_admin_user }
+
+      context "the question ID is invalid" do
+        before do
+          question = Fabricate(:question, user: Fabricate(:user))
+          get :claim, id: 4
+        end
+
+        it("flashes a danger message") { expect_danger_flash }
+        it("redirects to the questions page") { expect(response).to redirect_to questions_path }
+      end
+
+      context "there exists a claimed question already" do
+        before do
+          @question1 = Fabricate(:question, user: Fabricate(:user), claimed: true)
+          @question2 = Fabricate(:question, user: Fabricate(:user))
+
+          get :claim, id: 2
+
+          @question1.reload
+          @question2.reload
+        end
+
+        it("flashes a danger message") { expect_danger_flash }
+        it("redirects to the questions page") { expect(response).to redirect_to questions_path }
+        
+        it "does not claim the specified question" do
+          expect(@question1.claimed).to eq(true)
+          expect(@question2.claimed).to eq(false)
+        end
+
+      end
+
+      context "no other question is claimed" do
+        before do
+          @question1 = Fabricate(:question, user: Fabricate(:user))
+          @question2 = Fabricate(:question, user: Fabricate(:user))
+
+          get :claim, id: 2
+
+          @question1.reload
+          @question2.reload
+        end
+
+        it("claims the specified question") { expect(@question2.claimed).to eq(true) }
+        it("flashes a success message") { expect_success_flash }
+        it("redirects to the questions page") { expect(response).to redirect_to questions_path }
+      end
+
+    end # user signed in
+
+  end # GET claim
+
+  describe "GET unclaim" do
+    context "admin not signed in" do
+      it_behaves_like("require_admin_sign_in") { let(:action) { get :unclaim, id: 1 } }
+    end
+    
+    context "non-admin user signed in" do
+      before do
+        set_current_user
+        question = Fabricate(:question, user: get_current_user, claimed: true)
+        get :unclaim, id: question.id
+      end
+
+      it("flashes a danger message") { expect_danger_flash }
+      it("redirects to root path") { expect(response).to redirect_to root_path }
+    end
+
+    context "admin user signed in" do
+      before { set_current_admin_user }
+
+      context "the question ID is invalid" do
+        before do
+          question = Fabricate(:question, user: Fabricate(:user), claimed: true)
+          get :unclaim, id: 4
+        end
+
+        it("flashes a danger message") { expect_danger_flash }
+        it("redirects to the questions page") { expect(response).to redirect_to questions_path }
+      end
+
+      context "the identified question is not claimed" do
+        before do
+          @question1 = Fabricate(:question, user: Fabricate(:user), claimed: true)
+          @question2 = Fabricate(:question, user: Fabricate(:user))
+
+          get :unclaim, id: 2
+
+          @question1.reload
+          @question2.reload
+        end
+
+        it("flashes a danger message") { expect_danger_flash }
+        it("redirects to the questions page") { expect(response).to redirect_to questions_path }
+        
+        it "does not unclaim any question" do
+          expect(@question1.claimed).to eq(true)
+          expect(@question2.claimed).to eq(false)
+        end
+
+      end
+
+      context "the identified question is claimed" do
+        before do
+          @question1 = Fabricate(:question, user: Fabricate(:user))
+          @question2 = Fabricate(:question, user: Fabricate(:user), claimed: true)
+
+          get :unclaim, id: 2
+
+          @question1.reload
+          @question2.reload
+        end
+
+        it("unclaims the specified question") { expect(@question2.claimed).to eq(false) }
+        it("flashes a success message") { expect_success_flash }
+        it("redirects to the questions page") { expect(response).to redirect_to questions_path }
+      end
+
+    end # user signed in
+
+  end # GET unclaim
 
 
 end

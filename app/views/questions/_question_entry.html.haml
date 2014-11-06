@@ -14,3 +14,5 @@
       = icon_action_link("pencil", "Edit", edit_question_path(question))
       %br
       = icon_delete_action_link("trash", "Cancel", question_path(question))
+    - if admin_logged_in? && Question.active_question.nil?
+      = icon_action_link("asterisk", "Claim", claim_question_path(question))
