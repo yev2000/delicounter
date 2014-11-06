@@ -1,5 +1,6 @@
 .well
-  = link_to "Add Question to Queue", new_question_path, class: "btn btn-primary btn-large", style: "font-size: 32px; margin-top: 8px; margin-left: 40px; padding-left: 20px; padding-top: 20px; padding-bottom: 20px; padding-right: 20px;"
+  - if !admin_logged_in?
+    = link_to "Add Question to Queue", new_question_path, class: "btn btn-primary btn-large", style: "font-size: 32px; margin-top: 8px; margin-left: 40px; padding-left: 20px; padding-top: 20px; padding-bottom: 20px; padding-right: 20px;"
   %br
   = link_to "View Queue", questions_path, class: "btn btn-primary btn-large", style: "font-size: 32px; margin-top: 8px; margin-left: 40px; padding-left: 20px; padding-top: 20px; padding-bottom: 20px; padding-right: 20px;"
   %br

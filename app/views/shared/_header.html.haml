@@ -4,7 +4,8 @@
       = link_to "View Queue", questions_path, class: "btn btn-primary btn-small", style: "padding-bottom: 6px;"
   %li
     .btn-group.nav_item
-      = link_to "Enter Question", new_question_path, class: "btn btn-success btn-small", style: "padding-bottom: 6px;"
+      - if !admin_logged_in?
+        = link_to "Enter Question", new_question_path, class: "btn btn-success btn-small", style: "padding-bottom: 6px;"
   %li
     .btn-group.nav_item
       = link_to "View Participants", users_path, class: "btn btn-primary btn-small", style: "padding-bottom: 6px;"
