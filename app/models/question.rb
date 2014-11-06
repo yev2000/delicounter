@@ -1,6 +1,7 @@
 class Question < ActiveRecord::Base
   include ActionView::Helpers::DateHelper
-
+  include DeliSupport
+  
   belongs_to :user
   
   validates :title, :body, presence: true
@@ -8,6 +9,11 @@ class Question < ActiveRecord::Base
   def age_string
     time_ago_in_words(self.created_at) + " ago"
   end
+
+  def posted_on_string
+    " on " + pretty_time_string(created_at) + " (#{time_ago_in_words(created_at)} ago)"
+  end
+
 
   def self.active_question
     Question.find_by(claimed: true)

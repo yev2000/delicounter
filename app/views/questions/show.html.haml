@@ -1,0 +1,17 @@
+.well
+  %h2
+    Question Details
+.well
+  .row(style="margin-left: 20px;")
+    %label(style="margin-right: 40px;") Posted by
+    = "#{@question.user.username}"
+    %em= "#{@question.posted_on_string}"
+    %hr
+    %label(style="margin-right: 40px;") One-Liner
+    %label= @question.title
+  .row(style="margin-left: 20px;")
+    %hr
+    %label(style="margin-right: 40px;") Details
+    %br
+    %p(style="margin-left: 90px;")=  @question.body
+

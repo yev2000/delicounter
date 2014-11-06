@@ -1,0 +1,10 @@
+- button_text ||= "Submit"
+
+.well
+  %h2
+    Enter Your Question
+
+  = bootstrap_form_for(@question) do |f|
+    = f.text_field :title, {label: "One-Liner", cols: 50}
+    = f.text_area :body, label: "Details", rows: 8, cols: 50
+    = f.submit button_text, class: "btn btn-success"

@@ -26,7 +26,7 @@
       %th(width="5%") Position
       %th(width="20%") User
       %th(width="40%") One-Liner
-      %th(width="20%") Time Waiting
-      %th(width="15%") Action
+      %th(width="20%") When Submitted
+      %th(width="15%" style="text-align: right; padding-right: 15px;") Action
     - @unclaimed_questions.each_with_index do |question, index|
-      = render "question", { question: question, index: index }
+      = render "question_entry", { question: question, index: index }

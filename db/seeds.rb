@@ -8,9 +8,12 @@
 
 u1 = Fabricate(:user)
 u2 = Fabricate(:user)
+u3 = Fabricate(:user)
+u4 = Fabricate(:user)
 
 Fabricate(:question, user: u1)
 Fabricate(:question, user: u1, claimed: true)
-Fabricate(:question, user: u2)
-Fabricate(:question, user: u2)
+3.times { Fabricate(:question, user: u2) }
+6.times { Fabricate(:question, user: u3) }
+4.times { Fabricate(:question, user: u4) }
 

@@ -1,0 +1,16 @@
+%tr
+  %td
+    = index + 1
+  %td
+    = question.user.username
+  %td
+    = link_to(question.title, question_path(question))
+
+  %td
+    %small
+      %em= question.age_string
+  %td
+    - if question.user == current_user_get
+      = icon_action_link("pencil", "Edit", edit_question_path(question))
+      %br
+      = icon_delete_action_link("trash", "Cancel", question_path(question))

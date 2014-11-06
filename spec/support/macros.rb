@@ -24,7 +24,7 @@ def expect_success_flash
   expect(flash[:success]).not_to be_blank
 end
 
-def expect_error_flash
+def expect_danger_flash
   expect(flash[:danger]).not_to be_blank
 end
 

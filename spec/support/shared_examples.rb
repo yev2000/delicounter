@@ -28,3 +28,22 @@ shared_examples "ordinal_position_strings" do
     expect(retval).to eq("2nd")
   end
 end
+
+shared_examples "invalid_question_show_or_edit" do
+  it "flashes danger message" do
+    action
+    expect_danger_flash
+  end
+
+  it "redirects to questions index" do
+    action
+    expect(response).to redirect_to questions_path
+  end
+end
+
+shared_examples "valid_question_missing_data_edit" do
+  it "renders the edit template" do
+    action
+    expect(response).to render_template :edit
+  end
+end

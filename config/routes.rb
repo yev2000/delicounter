@@ -1,9 +1,14 @@
 Rails.application.routes.draw do
+
+  root to: 'home#front'
   
-  resources :questions, only: [:index, :update, :create, :new]
+  resources :questions
   resources :users, only: [:index, :create]
 
-  get 'signin' => 'users#new'
+  get 'signin', to: 'users#new'
+  get 'signout', to: 'users#destroy'
+  get 'admin_signin', to: 'admin#new'
+  get 'admin_signout', to: 'admin#destroy'
 
   get 'home', controller: 'home'
 

@@ -1,0 +1,9 @@
+%section.site_title
+  %h1
+    Sign in to get in line for questions
+  %p
+    = link_to "Sign In", signin_path, class: "btn btn-success btn-large", style: "font-size: 32px; margin-top: 8px; margin-left: 40px; padding-left: 20px; padding-top: 20px; padding-bottom: 20px; padding-right: 20px;"
+  %h2(style="margin-top: 100px;")
+    %em If you are an admin, sign in via the admin page to start claiming questions
+  %p
+    = link_to "Admin Sign In", admin_signin_path, class: "btn btn-primary btn-large", style: "font-size: 32px; margin-top: 8px; margin-left: 40px; padding-left: 20px; padding-top: 20px; padding-bottom: 20px; padding-right: 20px;"

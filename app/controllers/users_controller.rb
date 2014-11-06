@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
 
+  before_action :require_user, only: [:destroy]
+
   def new
     redirect_to home_path if logged_in?
     @user = User.new
@@ -14,6 +16,15 @@ class UsersController < ApplicationController
     else
       render :new
     end
+  end
+
+  def destroy
+    current_user_get.destroy
+    session[:userid] = nil
+    current_user_clear
+    clear_original_action
+    flash[:success] = "You have logged out"
+    redirect_to root_path
   end
 
   private
