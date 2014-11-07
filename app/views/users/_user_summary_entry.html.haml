@@ -1,0 +1,7 @@
+%tr
+  %td
+    = user.username
+  %td
+    = user.questions.size
+  %td
+    = timeago(user.oldest_question_time)

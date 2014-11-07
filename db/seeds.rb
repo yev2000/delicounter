@@ -17,5 +17,10 @@ Fabricate(:question, user: u1, claimed: true)
 6.times { Fabricate(:question, user: u3) }
 4.times { Fabricate(:question, user: u4) }
 
+Question.all.each_with_index do |q, index|
+  q.created_at = index.minutes.ago
+  q.save
+end
+
 admin = Fabricate(:admin, username: "admin", password: "admin")
 

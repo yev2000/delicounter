@@ -6,6 +6,7 @@
     %label(style="margin-right: 40px;") Posted by
     = "#{@question.user.username}"
     %em= "#{@question.posted_on_string}"
+    = "(#{timeago(@question.created_at)})".html_safe
     %hr
     %label(style="margin-right: 40px;") One-Liner
     %label= @question.title

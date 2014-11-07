@@ -3,13 +3,19 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  helper_method :icon_action_link, :icon_action_link_large, :icon_delete_action_link_large, :icon_delete_action_link, :current_user_get, :current_admin_user_get, :current_user_clear, :logged_in?, :admin_logged_in?, :clear_original_action
+  helper_method :timeago, :icon_action_link, :icon_action_link_large, :icon_delete_action_link_large, :icon_delete_action_link, :current_user_get, :current_admin_user_get, :current_user_clear, :logged_in?, :admin_logged_in?, :clear_original_action
   
   ########################
   #
   # Links
   #
   ########################
+  
+  def timeago(time, options = {})
+    options[:class] ||= "timeago"
+    view_context.content_tag(:abbr, time.to_s, options.merge(:title => time.getutc.iso8601)) if time
+  end
+
 
   def icon_action_link(icon_name, action_name, url_path="")
     link_to_string = '<span class="pull-right" style="margin-right: 5px; font-size:12px;">' + action_name + '&nbsp;&nbsp;<span class="glyphicon glyphicon-' + icon_name + '"></span></span>'
@@ -32,7 +38,7 @@ class ApplicationController < ActionController::Base
 
     # learned about view_context from the following stack overflow article
     # http://stackoverflow.com/questions/3843509/how-to-mixin-and-call-link-to-from-controller-in-rails
-    view_context.link_to link_to_string.html_safe, url_path, method: :delete
+    view_context.link_to link_to_string.html_safe, url_path, method: :delete, data: { confirm: "Are you sure?" }
   end
 
   def icon_delete_action_link(icon_name, action_name, url_path="")
@@ -40,7 +46,7 @@ class ApplicationController < ActionController::Base
 
     # learned about view_context from the following stack overflow article
     # http://stackoverflow.com/questions/3843509/how-to-mixin-and-call-link-to-from-controller-in-rails
-    view_context.link_to link_to_string.html_safe, url_path, method: :delete
+    view_context.link_to link_to_string.html_safe, url_path, method: :delete, data: { confirm: "Are you sure you want to cancel this question?" }
   end
 
   ########################

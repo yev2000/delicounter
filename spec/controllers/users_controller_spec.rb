@@ -1,6 +1,83 @@
 require 'rails_helper'
 
 describe UsersController do
+  
+  describe "GET index" do
+    context "basic behavior" do
+      before do
+        3.times { Fabricate(:user) }
+        get :index
+      end
+
+      it("renders the index template") { expect(response).to render_template :index }
+
+      it("sets @users to the set of logged in users") { expect(assigns(:users).size).to eq(3) }
+    end
+
+    context "each user has a single question" do
+      it "orders the users in @users by oldest question" do
+        3.times { Fabricate(:user) }
+
+        User.all.each_with_index do |u, index|
+          q = Fabricate(:question, user: u)
+          q.created_at = index.days.ago
+          q.save
+        end
+
+        get :index
+        expect(assigns(:users)[0]).to eq(User.last)
+      end
+    end
+
+    context "some users have missing questions" do
+      it "orders the users in @users by oldest question" do
+        5.times { Fabricate(:user) }
+        User.all.each_with_index do |u, index|
+          if (index != 3)
+            q = Fabricate(:question, user: u)
+            q.created_at = index.days.ago
+            q.save
+          end
+        end
+
+        get :index
+        expect(assigns(:users)[0]).to eq(User.last)
+      end
+
+      it "orders the users in @users by oldest question if last user has no questions" do
+        5.times { Fabricate(:user) }
+        User.all.each_with_index do |u, index|
+          if (index != 4)
+            q = Fabricate(:question, user: u)
+            q.created_at = index.days.ago
+            q.save
+          end
+        end
+
+        get :index
+        expect(assigns(:users)[0]).to eq(User.find(4))
+      end
+
+      it "orders the users in @users by oldest question if first and last users has no questions" do
+        5.times { Fabricate(:user) }
+        User.all.each_with_index do |u, index|
+          if (index != 0) && (index != 4)
+            q = Fabricate(:question, user: u)
+            q.created_at = index.days.ago
+            q.save
+          end
+        end
+
+        get :index
+        expect(assigns(:users)[0]).to eq(User.find(4))
+      end
+
+    end
+
+
+  end
+
+
   describe "GET new" do
     it "redirects to the home screen for already logged in user" do
       user = Fabricate(:user)

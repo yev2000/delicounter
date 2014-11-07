@@ -11,7 +11,7 @@ class Question < ActiveRecord::Base
   end
 
   def posted_on_string
-    " on " + pretty_time_string(created_at) + " (#{time_ago_in_words(created_at)} ago)"
+    " on " + pretty_time_string(created_at)
   end
 
 

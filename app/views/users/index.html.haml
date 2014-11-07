@@ -1,0 +1,12 @@
+.well
+  %header
+    %h2 Participants with Submitted Questions
+
+.well
+  %table.well.table.table-condensed
+    %tr
+      %th(width="50%") User
+      %th(width="20%") Pending Questions
+      %th(width="30%") Longest Question Time Waiting
+      - @users.each do |user|
+        = render "user_summary_entry", user: user

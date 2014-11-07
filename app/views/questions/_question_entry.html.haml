@@ -8,7 +8,7 @@
 
   %td
     %small
-      %em= question.age_string
+      %em= timeago(question.created_at)     
   %td
     - if question.user == current_user_get
       = icon_action_link("pencil", "Edit", edit_question_path(question))
