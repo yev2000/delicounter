@@ -29,24 +29,8 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all.to_a
-    @users.sort! do |x,y|
-      x_time = x.oldest_question_time
-      y_time = y.oldest_question_time
-      
-      case
-      when x_time == y_time
-        0
-      when x_time.nil?
-        1
-      when y_time.nil?
-        -1
-      else
-        x_time <=> y_time
-      end
-    end
-
+    @users.sort! { |x,y| User.compare_by_oldest_question(x,y) }
   end
-
 
   private
 

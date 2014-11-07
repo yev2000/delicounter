@@ -72,6 +72,32 @@ describe UsersController do
         expect(assigns(:users)[0]).to eq(User.find(4))
       end
 
+      it "orders @users when each user has a variety of questions posted" do
+        5.times { Fabricate(:user) }
+        User.all.each_with_index do |u, index|
+          q = Fabricate(:question, user: u)
+          q.created_at = 2.days.ago
+          q.save
+
+          q = Fabricate(:question, user: u)
+          q.created_at = 1.days.ago
+          q.save
+          
+          q = Fabricate(:question, user: u)
+          q.created_at = 3.days.ago
+          q.save
+        end
+
+        forced_old_question = User.find(4).questions[2]
+        forced_old_question.created_at = 4.days.ago
+        forced_old_question.save
+
+        get :index
+
+        expect(assigns(:users)[0]).to eq(forced_old_question.user)
+      end
+
+
     end
 
 
