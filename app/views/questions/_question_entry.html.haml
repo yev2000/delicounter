@@ -4,15 +4,15 @@
   %td
     = question.user.username
   %td
-    = link_to(question.title, question_path(question))
+    = link_to(question.title, question_path(question), id: "question-title-#{question.id}")
 
   %td
     %small
       %em= timeago(question.created_at)     
   %td
     - if question.user == current_user_get
-      = icon_action_link("pencil", "Edit", edit_question_path(question))
+      = icon_action_link("pencil", "Edit", edit_question_path(question), {id: "edit-question-#{question.id}"} )
       %br
-      = icon_delete_action_link("trash", "Cancel", question_path(question))
+      = icon_action_link("trash", "Cancel", question_path(question), {method: :delete, data: { confirm: "Are you sure you want to cancel this question?" }, id: "delete-question-#{question.id}"})
     - if admin_logged_in? && Question.active_question.nil?
-      = icon_action_link("asterisk", "Claim", claim_question_path(question))
+      = icon_action_link("asterisk", "Claim", claim_question_path(question), {id: "claim-question-#{question.id}"})

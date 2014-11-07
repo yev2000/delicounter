@@ -26,11 +26,19 @@ def clear_current_admin_user
   session[:adminid] = nil
 end
 
-def sign_in_user(user)
-  visit sign_in_path
-  fill_in "User Name", with: user.username
+def sign_in_user(username)
+  visit signin_path
+  fill_in "Your Name", with: username
   click_button "Sign In"
 end
+
+def sign_in_admin(admin_user)
+  visit admin_signin_path
+  fill_in "Username", with: admin_user.username
+  fill_in "Password", with: admin_user.password
+  click_button "Admin Sign In"
+end
+
 
 def expect_success_flash
   expect(flash[:success]).not_to be_blank

@@ -13,14 +13,14 @@
       %strong(style="margin-left: 80px;")
         One-Liner:
       %span(style="margin-right: 80px; margin-left: 40px;")
-        %em= @active_question.title
-      .well(style="margin-top: 40px; margin-left: 80px; margin-right: 120px;")
+        %em(id="active-question-title-#{@active_question.id}")= @active_question.title
+      .well(style="margin-top: 40px; margin-left: 80px; margin-right: 120px;" id="active-question-body-#{@active_question.id}")
         = @active_question.body
       - if admin_logged_in?
-        = icon_action_link_large("eject", "Unclaim", unclaim_question_path(@active_question))
+        = icon_action_link_large("eject", "Unclaim", unclaim_question_path(@active_question), {id: "unclaim-question-id"})
         %br
         %br
-        = icon_delete_action_link_large("check", "Complete", question_path(@active_question))
+        = icon_action_link_large("check", "Complete", question_path(@active_question), {method: :delete, data: { confirm: "Are you sure?" }, id: "complete-question-id" })
         %br
 
     - else

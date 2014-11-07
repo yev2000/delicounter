@@ -16,7 +16,7 @@ class AdminSessionsController < ApplicationController
 
       redirect_to questions_path
     else
-      flash[:danger] = "Invalid email or password"
+      flash[:danger] = "Invalid username or password"
 
       # save away the username that was entered so that when we
       # render the form again, we will preserve the contents of

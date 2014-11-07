@@ -1,11 +1,11 @@
 %ul.nav(style="margin-top: 10px;")
   %li
     .btn-group.nav_item
-      = link_to "View Queue", questions_path, class: "btn btn-primary btn-small", style: "padding-bottom: 6px;"
+      = link_to "View Queue", questions_path, class: "btn btn-primary btn-small", style: "padding-bottom: 6px;", id: "view-queue"
   %li
     .btn-group.nav_item
       - if !admin_logged_in?
-        = link_to "Enter Question", new_question_path, class: "btn btn-success btn-small", style: "padding-bottom: 6px;"
+        = link_to "Enter Question", new_question_path, class: "btn btn-success btn-small", style: "padding-bottom: 6px;", id: "new-question-button"
   %li
     .btn-group.nav_item
       = link_to "View Participants", users_path, class: "btn btn-primary btn-small", style: "padding-bottom: 6px;"
